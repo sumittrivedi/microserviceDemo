@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.example.demo.models.UserRequestModel;
 import com.example.demo.models.UserResponseModel;
-import com.example.demo.models.UserUpdateRequestModel;
 
 public interface UserService {
 	List<UserResponseModel> getAllUsers();
@@ -15,5 +14,5 @@ public interface UserService {
 
 	void deleteUser(int userId);
 
-	UserResponseModel updateUser(int user_id, UserUpdateRequestModel userUpdateRequestModel);
+	UserResponseModel updateUser(int user_id, UserRequestModel userRequestModel);
 }

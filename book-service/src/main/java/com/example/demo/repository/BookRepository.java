@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entity.BookEntity;
 
 @Repository
-public interface BookRepository extends CrudRepository<BookEntity, String> {
+public interface BookRepository extends CrudRepository<BookEntity, Integer> {
 
 }

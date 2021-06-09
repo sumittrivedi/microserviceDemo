@@ -1,7 +1,18 @@
 package com.example.demo.services;
 
-import com.example.demo.entity.BookEntity;
+import java.util.List;
+
+import com.example.demo.models.BookRequestModel;
+import com.example.demo.models.BookResponseModel;
 
 public interface BookService {
-	BookEntity getBookDetails(String bookId);
+	BookResponseModel getBookDetails(int bookId);
+
+	List<BookResponseModel> getBookDetails();
+
+	BookResponseModel addBook(BookRequestModel bookRequestModel);
+
+	void deleteBook(int bookId);
+
+	BookResponseModel updateBook(int bookId, BookRequestModel bookRequestModel);
 }

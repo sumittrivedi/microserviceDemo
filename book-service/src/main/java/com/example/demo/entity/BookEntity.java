@@ -12,9 +12,9 @@ import lombok.Data;
 public class BookEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String bookId;
+	private int bookId;
 	private String bookTitle;
-	private String BookDesp;
+	private String bookDesc;
 	private String author;
 	private String category;
 }

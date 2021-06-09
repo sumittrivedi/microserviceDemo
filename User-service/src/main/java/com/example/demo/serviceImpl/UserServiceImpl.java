@@ -10,7 +10,6 @@ import com.example.demo.Entity.UserEntity;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.models.UserRequestModel;
 import com.example.demo.models.UserResponseModel;
-import com.example.demo.models.UserUpdateRequestModel;
 import com.example.demo.services.UserService;
 
 @Service
@@ -53,14 +52,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserResponseModel createUser(UserRequestModel userRequestModel) {
 		UserEntity userEntity = new UserEntity();
-		userEntity.setUserId(userRequestModel.getUserId());
 		userEntity.setUserName(userRequestModel.getUserName());
 		userEntity.setEmail(userRequestModel.getEmail());
 		userEntity.setAddress(userRequestModel.getAddress());
 		userEntity.setPassword(userRequestModel.getPassword());
 		userEntity.setPhone(userRequestModel.getPhone());
 		userRepository.save(userEntity);
-		return getUserDetails(userRequestModel.getUserId());
+		return getUserDetails(userEntity.getUserId());
 	}
 
 	@Override
@@ -69,14 +67,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserResponseModel updateUser(int user_id, UserUpdateRequestModel userUpdateRequestModel) {
+	public UserResponseModel updateUser(int user_id, UserRequestModel userRequestModel) {
 		UserEntity userEntity = userRepository.findById(user_id).orElse(null);
 		if (userEntity != null) {
-			userEntity.setUserName(userUpdateRequestModel.getUserName());
-			userEntity.setEmail(userUpdateRequestModel.getEmail());
-			userEntity.setAddress(userUpdateRequestModel.getAddress());
-			userEntity.setPassword(userUpdateRequestModel.getPassword());
-			userEntity.setPhone(userUpdateRequestModel.getPhone());
+			userEntity.setUserName(userRequestModel.getUserName());
+			userEntity.setEmail(userRequestModel.getEmail());
+			userEntity.setAddress(userRequestModel.getAddress());
+			userEntity.setPassword(userRequestModel.getPassword());
+			userEntity.setPhone(userRequestModel.getPhone());
 			userRepository.save(userEntity);
 		}
 		return getUserDetails(user_id);
