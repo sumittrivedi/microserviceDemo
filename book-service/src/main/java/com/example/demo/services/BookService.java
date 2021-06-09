@@ -1,5 +1,7 @@
 package com.example.demo.services;
 
-public interface BookService {
+import com.example.demo.entity.BookEntity;
 
+public interface BookService {
+	BookEntity getBookDetails(String bookId);
 }

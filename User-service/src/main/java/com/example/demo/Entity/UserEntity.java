@@ -12,7 +12,10 @@ import lombok.Data;
 public class UserEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String userId;
+	private int userId;
 	private String userName;
 	private String password;
+	private String email;
+	private String phone;
+	private String address;
 }
