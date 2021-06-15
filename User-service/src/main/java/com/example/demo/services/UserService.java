@@ -8,11 +8,11 @@ import com.example.demo.models.UserResponseModel;
 public interface UserService {
 	List<UserResponseModel> getAllUsers();
 
-	UserResponseModel getUserDetails(int userId);
+	UserResponseModel getUserById(int userId);
 
 	UserResponseModel createUser(UserRequestModel userRequestModel);
 
 	void deleteUser(int userId);
 
-	UserResponseModel updateUser(int user_id, UserRequestModel userRequestModel);
+	UserResponseModel updateUser(int userId, UserRequestModel userRequestModel);
 }

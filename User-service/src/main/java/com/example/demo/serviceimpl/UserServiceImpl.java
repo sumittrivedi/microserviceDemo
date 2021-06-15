@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.Entity.UserEntity;
 import com.example.demo.Repository.UserRepository;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.models.UserRequestModel;
 import com.example.demo.models.UserResponseModel;
 import com.example.demo.services.UserService;
@@ -16,49 +17,36 @@ import com.example.demo.services.UserService;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
-
-	@Override
-	public UserResponseModel getUserDetails(int userId) {
-		UserEntity userEntity = userRepository.findById(userId).orElse(null);
-		UserResponseModel userResponseModel = new UserResponseModel();
-		if (userEntity != null) {
-			userResponseModel.setUserId(userEntity.getUserId());
-			userResponseModel.setUserName(userEntity.getUserName());
-			userResponseModel.setEmail(userEntity.getEmail());
-			userResponseModel.setPhone(userEntity.getPhone());
-			userResponseModel.setAddress(userEntity.getAddress());
-		}
-		return userResponseModel;
-	}
+	@Autowired
+	private UserMapper userMapper;
 
 	@Override
 	public List<UserResponseModel> getAllUsers() {
-		Iterable<UserEntity> usersEntityList = userRepository.findAll();
+		List<UserEntity> usersEntityList = (List<UserEntity>) userRepository.findAll();
 		List<UserResponseModel> userResponseModels = new ArrayList<>();
-		if (usersEntityList != null) {
-			for (UserEntity userEntity : usersEntityList) {
-				UserResponseModel userResponseModel = new UserResponseModel();
-				userResponseModel.setUserId(userEntity.getUserId());
-				userResponseModel.setUserName(userEntity.getUserName());
-				userResponseModel.setEmail(userEntity.getEmail());
-				userResponseModel.setPhone(userEntity.getPhone());
-				userResponseModel.setAddress(userEntity.getAddress());
-				userResponseModels.add(userResponseModel);
-			}
+		if (usersEntityList.isEmpty() == false) {
+			usersEntityList
+					.forEach(userEntity -> userResponseModels.add(userMapper.convertToUserResponseModel(userEntity)));
 		}
 		return userResponseModels;
 	}
 
 	@Override
+	public UserResponseModel getUserById(int userId) {
+		UserEntity userEntity = userRepository.findById(userId).orElse(null);
+		UserResponseModel userResponseModel = new UserResponseModel();
+		if (userEntity != null) {
+			userResponseModel = userMapper.convertToUserResponseModel(userEntity);
+		}
+		return userResponseModel;
+	}
+
+	@Override
 	public UserResponseModel createUser(UserRequestModel userRequestModel) {
 		UserEntity userEntity = new UserEntity();
-		userEntity.setUserName(userRequestModel.getUserName());
-		userEntity.setEmail(userRequestModel.getEmail());
-		userEntity.setAddress(userRequestModel.getAddress());
-		userEntity.setPassword(userRequestModel.getPassword());
-		userEntity.setPhone(userRequestModel.getPhone());
+		userMapper.convertToUserEntity(userRequestModel);
 		userRepository.save(userEntity);
-		return getUserDetails(userEntity.getUserId());
+		return getUserById(userEntity.getUserId());
 	}
 
 	@Override
@@ -67,17 +55,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserResponseModel updateUser(int user_id, UserRequestModel userRequestModel) {
-		UserEntity userEntity = userRepository.findById(user_id).orElse(null);
+	public UserResponseModel updateUser(int userId, UserRequestModel userRequestModel) {
+		UserEntity userEntity = userRepository.findById(userId).orElse(null);
 		if (userEntity != null) {
-			userEntity.setUserName(userRequestModel.getUserName());
-			userEntity.setEmail(userRequestModel.getEmail());
-			userEntity.setAddress(userRequestModel.getAddress());
-			userEntity.setPassword(userRequestModel.getPassword());
-			userEntity.setPhone(userRequestModel.getPhone());
+			userEntity = userMapper.convertToUserEntity(userRequestModel);
 			userRepository.save(userEntity);
 		}
-		return getUserDetails(user_id);
+		return userMapper.convertToUserResponseModel(userEntity);
 	}
 
 }

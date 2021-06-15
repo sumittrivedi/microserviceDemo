@@ -25,32 +25,33 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UserResponseModel>> getAllUsers() {
 		List<UserResponseModel> userModels = userService.getAllUsers();
 		return new ResponseEntity<>(userModels, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserResponseModel> getUserByUserId(@PathVariable int userId) {
-		UserResponseModel userModel = userService.getUserDetails(userId);
+		UserResponseModel userModel = userService.getUserById(userId);
 		return new ResponseEntity<>(userModel, HttpStatus.OK);
 	}
 
-	@PostMapping(value = "")
+	@PostMapping(value = "/")
 	public ResponseEntity<UserResponseModel> createUser(@RequestBody UserRequestModel userRequestModel) {
 		UserResponseModel userResponseModel = userService.createUser(userRequestModel);
 		return new ResponseEntity<>(userResponseModel, HttpStatus.OK);
 	}
 
-	@DeleteMapping(value = "{userId}")
+	@DeleteMapping(value = "/{userId}")
 	public void removeUser(@PathVariable int userId) {
 		userService.deleteUser(userId);
 	}
-	
-	@PutMapping(value = "{userId}")
-	public ResponseEntity<UserResponseModel> updateUser(@PathVariable int userId, @RequestBody UserRequestModel userRequestModel) {
+
+	@PutMapping(value = "/{userId}")
+	public ResponseEntity<UserResponseModel> updateUser(@PathVariable int userId,
+			@RequestBody UserRequestModel userRequestModel) {
 		UserResponseModel userResponseModel = userService.updateUser(userId, userRequestModel);
 		return new ResponseEntity<>(userResponseModel, HttpStatus.OK);
-	} 
+	}
 }
